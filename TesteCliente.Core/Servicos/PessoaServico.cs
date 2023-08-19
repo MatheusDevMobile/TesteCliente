@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TesteCliente.Core.Auxiliares.VO;
+using TesteCliente.Core.Extensoes;
 using TesteCliente.Core.Interfaces.Repositorios;
 using TesteCliente.Core.Interfaces.Servicos;
 using TesteCliente.Modelos;
@@ -9,16 +10,18 @@ namespace TesteCliente.Core.Servicos
     public class PessoaServico : IPessoaServico
     {
         protected IMapper Mapper { get; }
-        protected IRepositorioLeitura<Pessoa> Repositorio { get; }
-        public PessoaServico(IRepositorioLeitura<Pessoa> repositorio, IMapper mapper)
+        protected IRepositorioLeitura<Pessoa> RepositorioLeitura { get; }
+        protected IRepositorioEscrita<Pessoa> RepositorioEscrita { get; }
+        public PessoaServico(IRepositorioLeitura<Pessoa> repositorioLeitura, IMapper mapper, IRepositorioEscrita<Pessoa> repositorioEscrita)
         {
-            Repositorio = repositorio;
+            RepositorioLeitura = repositorioLeitura;
+            RepositorioEscrita = repositorioEscrita;
             Mapper = mapper;
         }
 
         public async Task<PessoaDetalheVO> ObterDetalheAsync(string idCliente)
         {
-            var pessoa = await Repositorio.ObterPorIdAsync(idCliente);
+            var pessoa = await RepositorioLeitura.ObterPorIdAsync(idCliente);
             return Mapper.Map<PessoaDetalheVO>(pessoa);
         }
 
@@ -26,14 +29,15 @@ namespace TesteCliente.Core.Servicos
         {
             return await Task.Run(() =>
             {
-                var pessoas = Repositorio.ObterTodos().ToList();
+                var pessoas = RepositorioLeitura.ObterTodos().ToList();
                 return Mapper.Map<List<PessoaVO>>(pessoas);
             });
         }
 
-        public async Task CadastrarAsync(Pessoa pessoa)
+        public async Task CadastrarAsync(PessoaCadastroVO pessoaCadastro)
         {
-            throw new NotImplementedException();
+            var pessoaPersistencia = Mapper.Map<Pessoa>(pessoaCadastro);
+            await RepositorioEscrita.AdicionarAsync(pessoaPersistencia);
         }
     }
 }

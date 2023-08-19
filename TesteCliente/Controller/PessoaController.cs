@@ -3,11 +3,10 @@ using Swashbuckle.AspNetCore.Annotations;
 using TesteCliente.Core.Auxiliares.VO;
 using TesteCliente.Core.Auxiliares;
 using TesteCliente.Core.Interfaces.Servicos;
-using TesteCliente.Modelos;
 
 namespace TesteCliente.Controller
 {
-    [SwaggerTag("Ações relacionadas ao TesteCliente")]
+    [SwaggerTag("Ações relacionadas ao Cliente")]
     [Route("api/[controller]")]
     [ApiController]
     public class PessoaController : ControllerBase
@@ -19,12 +18,12 @@ namespace TesteCliente.Controller
         }
         [HttpPost("Cadastrar")]
         [SwaggerOperation(Summary = "Cadastra clientes", Description = "")]
-        [SwaggerResponse(200, "Dados encontrados", typeof(List<PessoaVO>))]
+        [SwaggerResponse(200, "Cadastrado com sucesso", typeof(PessoaCadastroVO))]
         [SwaggerResponse(500, "Erro interno do servidor", typeof(ErroResposta))]
-        public async Task<IActionResult> CadastrarAsync([FromBody] Pessoa pessoa)
+        public async Task<IActionResult> CadastrarAsync([FromBody] PessoaCadastroVO pessoa)
         {
-            var clientes = await Servico.ObterTodosAsync();
-            return Ok(clientes);
+            await Servico.CadastrarAsync(pessoa);
+            return Ok(pessoa);
         }
 
         [HttpGet("ObterTodosClientes")]

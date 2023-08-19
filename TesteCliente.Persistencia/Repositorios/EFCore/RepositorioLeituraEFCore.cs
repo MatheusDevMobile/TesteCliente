@@ -4,17 +4,17 @@ using TesteCliente.Core.Interfaces.Repositorios;
 
 namespace TesteCliente.Persistencia.Repositorios.EFCore
 {
-    public class RepositorioLeituraEFCore<T> : IRepositorioLeitura<T> where T : class, IElementoRegistro
+    public class RepositorioLeituraEFCore<T> : IRepositorioLeitura<T>, IRepositorioEscrita<T> where T : class, IElementoRegistro
     {
-        protected DbContext Context { get; }
+        protected DbContext Contexto { get; }
 
-        public RepositorioLeituraEFCore(DbContext context)
+        public RepositorioLeituraEFCore(DbContext contexto)
         {
-            Context = context;
+            Contexto = contexto;
         }
         public async Task<T> ObterPorIdAsync(string id)
         {
-            return await Context.FindAsync<T>(id);
+            return await Contexto.FindAsync<T>(id);
         }
         public IOrderedQueryable<T> ObterTodos()
         {
@@ -27,7 +27,13 @@ namespace TesteCliente.Persistencia.Repositorios.EFCore
         }
         private IQueryable<T> GetDbSet()
         {
-            return Context.Set<T>();
+            return Contexto.Set<T>();
+        }
+
+        public async Task AdicionarAsync(T entidade)
+        {
+            await Contexto.AddAsync(entidade);
+            await Contexto.SaveChangesAsync();
         }
     }
 }

@@ -20,9 +20,6 @@ builder.Services.AddScoped<DbContext>(s =>
 {
     var contexto = new FabricaBancoTempoExecucaoEF().CreateDbContext(null!);
     contexto.Database.Migrate();
-
-    var sementeDados = new SementeDados(contexto);
-    sementeDados.CriarDados();
     return contexto;
 });
 
@@ -31,6 +28,7 @@ builder.Services.AddScoped<IPessoaServico, PessoaServico>();
 
 //Repositorios
 builder.Services.AddScoped<IRepositorioLeitura<Pessoa>, PessoaRepositorio>();
+builder.Services.AddScoped<IRepositorioEscrita<Pessoa>, PessoaRepositorio>();
 
 builder.Services.AddSwaggerGen(c =>
 {

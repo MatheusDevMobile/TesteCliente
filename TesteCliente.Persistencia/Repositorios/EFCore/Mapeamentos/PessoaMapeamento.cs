@@ -29,7 +29,7 @@ namespace TesteCliente.Persistencia.Repositorios.EFCore.Mapeamentos
                   .IsUnicode(false);
 
                 pBuilder.Property(o => o.Numero)
-                        .HasMaxLength(5);
+                        .HasMaxLength(10);
 
                 pBuilder.Property(o => o.Bairro)
                        .HasMaxLength(30);
@@ -38,7 +38,7 @@ namespace TesteCliente.Persistencia.Repositorios.EFCore.Mapeamentos
                        .HasMaxLength(30);
 
                 pBuilder.Property(o => o.UF)
-                       .HasMaxLength(2);
+                       .HasMaxLength(20);
             });
         }
     }
