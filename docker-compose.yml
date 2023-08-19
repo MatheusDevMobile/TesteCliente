@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+  mssql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "testeCliente1433"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+  testecliente:
+    image: ${DOCKER_REGISTRY-}testecliente
+    build:
+      context: .
+      dockerfile: TesteCliente/Dockerfile
+    environment:
+      DbServer: "mssql-server"
+      DbPort: "1433"
+      DbUser: "SA"
+      Password: "testeCliente1433"
+      Database: "sqldb-testecliente"
+    ports: 
+      - "8090:80"
