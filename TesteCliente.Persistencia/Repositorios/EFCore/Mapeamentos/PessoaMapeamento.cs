@@ -25,8 +25,7 @@ namespace TesteCliente.Persistencia.Repositorios.EFCore.Mapeamentos
             {
                 pBuilder.ToTable(nameof(Endereco))
                   .Property(o => o.Logradouro)
-                  .HasMaxLength(100)
-                  .IsUnicode(false);
+                  .HasMaxLength(100);
 
                 pBuilder.Property(o => o.Numero)
                         .HasMaxLength(10);

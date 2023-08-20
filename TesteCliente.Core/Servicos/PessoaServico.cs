@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using TesteCliente.Core.Auxiliares.VO;
-using TesteCliente.Core.Extensoes;
 using TesteCliente.Core.Interfaces.Repositorios;
 using TesteCliente.Core.Interfaces.Servicos;
 using TesteCliente.Modelos;
